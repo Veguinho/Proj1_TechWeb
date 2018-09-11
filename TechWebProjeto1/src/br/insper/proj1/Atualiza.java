@@ -21,9 +21,9 @@ public class Atualiza extends HttpServlet {
 		out.println("<html><body>");
 		out.println("<form method='post'>");
 		out.println("ID: <input type='number' name='id'><br>");
-		out.println("Nome: <input type='text' name='nome'><br>");
-		out.println("Nascimento: <input type='date' name='nascimento'><br>");
-		out.println("Altura: <input type='number' name='altura' step='0.01'><br>");
+		out.println("Titulo: <input type='text' name='titulo'><br>");
+		out.println("Data: <input type='date' name='data'><br>");
+		out.println("Texto: <input type='text' name='texto'><br>");
 		out.println("<input type='submit' value='Submit'>");
 		out.println("</form>");
 		out.println("<body><html>");
@@ -32,22 +32,22 @@ public class Atualiza extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Dao dao = new Dao();
-		Pessoas pessoa = new Pessoas();
-		pessoa.setId(Integer.valueOf(request.getParameter("id")));
-		pessoa.setNome(request.getParameter("nome"));
-		pessoa.setAltura(Double.valueOf(request.getParameter("altura")));
-		String nascimento = request.getParameter("nascimento");
-		Date data;
+		Posts post = new Posts();
+		post.setId(Integer.valueOf(request.getParameter("id")));
+		post.setTitulo(request.getParameter("titulo"));
+		post.setTexto(request.getParameter("texto"));
+		String data = request.getParameter("nascimento");
+		Date dateToday;
 		
 		try {
-			data = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(nascimento);
-			Calendar dataNascimento = Calendar.getInstance();
-			dataNascimento.setTime(data);
-			pessoa.setNascimento(dataNascimento);
-			dao.altera(pessoa);
+			dateToday = (Date) new SimpleDateFormat("dd-MM-yyyy").parse(data);
+			Calendar dataHoje = Calendar.getInstance();
+			dataHoje.setTime(dateToday);
+			post.setData(dataHoje);
+			dao.altera(post);
 			PrintWriter out = response.getWriter();
 			out.println("<html><body>");
-			out.println("atualizado" + pessoa.getNome());
+			out.println("atualizado" + post.getTitulo());
 			out.println("</body></html>");
 			dao.close();	
 		}

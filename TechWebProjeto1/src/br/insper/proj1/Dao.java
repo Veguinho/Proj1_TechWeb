@@ -19,7 +19,7 @@ public class Dao {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				connection = DriverManager.getConnection( 
-						"jdbc:mysql://localhost/banco", "root", "");
+						"jdbc:mysql://localhost/Projeto1", "root", "");
 			
 			} 
 			
@@ -34,24 +34,25 @@ public class Dao {
 			}
 	}
 	
-	public List<Pessoas> getLista() {
+	public List<Posts> getLista() {
 		
-		List<Pessoas> pessoas = new ArrayList<Pessoas>();
+		List<Posts> postsLista = new ArrayList<Posts>();
 		
 		try {	
 			PreparedStatement stmt;
-			stmt = connection.prepareStatement("SELECT * FROM Pessoa");			
+			stmt = connection.prepareStatement("SELECT * FROM Post");			
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				Pessoas pessoa = new Pessoas();
-				pessoa.setId(rs.getInt("id"));
-				pessoa.setNome(rs.getString("nome"));
+				Posts post = new Posts();
+				post.setId(rs.getInt("id"));
+				post.setTitulo(rs.getString("titulo"));
 				Calendar data = Calendar.getInstance();
-				data.setTime(rs.getDate("nascimento"));
-				pessoa.setNascimento(data);
-				pessoa.setAltura(rs.getDouble("altura"));
-				pessoas.add(pessoa);
+				data.setTime(rs.getDate("data"));
+				post.setData(data);
+				post.setUsuario(rs.getInt("usuario"));
+				post.setTexto(rs.getString("texto"));
+				postsLista.add(post);
 			}
 			rs.close();
 			stmt.close();
@@ -60,19 +61,20 @@ public class Dao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return pessoas;
+		return postsLista;
 	}
 	
-	public void adiciona(Pessoas pessoa) {
+	public void adiciona(Posts post) {
 		
-		String sql = "INSERT INTO Pessoa" + "(nome,nascimento,altura) values(?,?,?)";
+		String sql = "INSERT INTO Post" + "(titulo,data,usuario,texto) values(?,?,?,?)";
 		PreparedStatement stmt;
 		
 		try {
 			stmt = connection.prepareStatement(sql);
-			stmt.setString(1,pessoa.getNome());
-			stmt.setDate(2, new Date(pessoa.getNascimento().getTimeInMillis()));
-			stmt.setDouble(3,pessoa.getAltura());
+			stmt.setString(1,post.getTitulo());
+			stmt.setDate(2, new Date(post.getData().getTimeInMillis()));
+			stmt.setInt(3,post.getUsuario());
+			stmt.setString(4, post.getTexto());
 			stmt.execute();
 			stmt.close();
 		}
@@ -94,15 +96,16 @@ public class Dao {
 		
 	}
 	
-	public void altera(Pessoas pessoa) {
-		String sql = "UPDATE Pessoa SET " + "nome=?, nascimento=?, altura=? WHERE id=?";
+	public void altera(Posts post) {
+		String sql = "UPDATE Post SET " + "titulo=?, data=?, usuario=?, texto=?, WHERE id=?";
 		PreparedStatement stmt;
 		try {
 			stmt = connection.prepareStatement(sql);
-			stmt.setString(1, pessoa.getNome());
-			stmt.setDate(2, new Date(pessoa.getNascimento().getTimeInMillis()));
-			stmt.setDouble(3, pessoa.getAltura());
-			stmt.setInt(4, pessoa.getId());
+			stmt.setString(1,post.getTitulo());
+			stmt.setDate(2, new Date(post.getData().getTimeInMillis()));
+			stmt.setInt(3,post.getUsuario());
+			stmt.setString(4, post.getTexto());
+			stmt.setInt(5, post.getId());
 			stmt.execute();
 			stmt.close();
 		} 
@@ -115,7 +118,7 @@ public class Dao {
 		PreparedStatement stmt;
 		try {
 			stmt = connection
-			 .prepareStatement("DELETE FROM Pessoa WHERE id=?");
+			 .prepareStatement("DELETE FROM Post WHERE id=?");
 			stmt.setLong(1, id);
 			stmt.execute();
 			stmt.close();

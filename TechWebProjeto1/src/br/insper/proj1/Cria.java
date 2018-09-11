@@ -13,42 +13,60 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/cria")
+@WebServlet("/Cria")
 public class Cria extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		PrintWriter out = response.getWriter();
+		Dao dao = new Dao();
 		
-		out.println("<html><body>");
-		out.println("<form method='post'>");
-		out.println("Nome: <input type='text' name='nome'><br>");
-		out.println("Nascimento: <input type='date' name='nascimento'><br>");
-		out.println("Altura: <input type='number' name='altura' step='0.01'><br>");
-		out.println("<input type='submit' value='Submit'>");
-		out.println("</form>");
-		out.println("<body><html>");
+		Posts post = new Posts();
+		
+		post.setTitulo(request.getParameter("titulo"));
+		post.setUsuario(Integer.valueOf(request.getParameter("usuario")));
+		String data = request.getParameter("data");
+		post.setTexto(request.getParameter("texto"));
+		
+		java.util.Date dateToday;
+		
+		try {
+			dateToday = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+			Calendar dataDoPost = Calendar.getInstance();
+			dataDoPost.setTime(dateToday);
+			post.setData(dataDoPost);
+			dao.adiciona(post);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		response.sendRedirect("posts.jsp");
+		
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Dao dao = new Dao();
-		Pessoas pessoa = new Pessoas();
+		Posts post = new Posts();
 		
-		pessoa.setNome(request.getParameter("nome"));
-		pessoa.setAltura(Double.valueOf(request.getParameter("altura")));
-		String nascimento = request.getParameter("nascimento");
-		java.util.Date data;
+		post.setTitulo(request.getParameter("titulo"));
+		post.setUsuario(Integer.valueOf(request.getParameter("usuario")));
+		String data = request.getParameter("data");
+		post.setTexto(request.getParameter("texto"));
+		java.util.Date dateToday;
+		
+		
 		
 		try {
-			data = new SimpleDateFormat("dd-MM-yyyy").parse(nascimento);
-			Calendar dataNascimento = Calendar.getInstance();
-			dataNascimento.setTime(data);
-			pessoa.setNascimento(dataNascimento);
-			dao.adiciona(pessoa);
+			dateToday = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+			Calendar dataDoPost = Calendar.getInstance();
+			dataDoPost.setTime(dateToday);
+			post.setData(dataDoPost);
+			dao.adiciona(post);
 			PrintWriter out = response.getWriter();
 			out.println("<html><body>");
-			out.println("adicionado" + pessoa.getNome());
+			out.println("adicionado" + post.getTitulo());
 			out.println("</body></html>");
 			dao.close();
 		
