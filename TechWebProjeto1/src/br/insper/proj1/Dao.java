@@ -97,7 +97,7 @@ public class Dao {
 	}
 	
 	public void altera(Posts post) {
-		String sql = "UPDATE Post SET " + "titulo=?, data=?, usuario=?, texto=?, WHERE id=?";
+		String sql = "UPDATE Post SET " + "titulo=?, data=?, usuario=?, texto=? WHERE id=?";
 		PreparedStatement stmt;
 		try {
 			stmt = connection.prepareStatement(sql);
@@ -126,6 +126,49 @@ public class Dao {
 		catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
+		}
+	}
+	
+	public List<Usuarios> getUsuarios() {
+		
+		List<Usuarios> usuariosLista = new ArrayList<Usuarios>();
+		
+		try {	
+			PreparedStatement stmt;
+			stmt = connection.prepareStatement("SELECT * FROM Login");			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Usuarios usuario = new Usuarios();
+				usuario.setId(rs.getInt("id_usuario"));
+				usuario.setUsuario(rs.getString("usuario"));
+				usuario.setSenha(rs.getString("senha"));
+				usuariosLista.add(usuario);
+			}
+			rs.close();
+			stmt.close();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return usuariosLista;
+	}
+	public void adicionaUsuario(Usuarios usuario) {
+		
+		String sql = "INSERT INTO Login" + "(usuario,senha) values(?,?)";
+		PreparedStatement stmt;
+		
+		try {
+			stmt = connection.prepareStatement(sql);
+			stmt.setString(1,usuario.getUsuario());
+			stmt.setString(2, usuario.getSenha());
+			stmt.execute();
+			stmt.close();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

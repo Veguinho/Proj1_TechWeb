@@ -1,0 +1,53 @@
+article {
+  display: grid;
+  grid-template-columns: 
+    [full-start] minmax(1em, 1fr) 
+    [main-start] minmax(0, 56em) [main-end]
+    minmax(1em, 1fr) [full-end];
+  grid-gap: 1em;
+}
+
+section {
+  grid-column: main;
+}
+
+figure {
+  grid-column: full;
+}
+
+/* Demo Specific Styles */
+body {
+  padding: 2em 0;
+}
+
+article > * {
+  background-color: #eaeaea;
+  padding: 2em;
+}
+
+figure {
+  text-align: center;
+}
+
+form{
+	display:inline-block;
+}
+
+img {
+  max-width: 100%;
+}
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+}
+button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
