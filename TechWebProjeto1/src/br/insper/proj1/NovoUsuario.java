@@ -19,6 +19,7 @@ public class NovoUsuario extends HttpServlet {
 		
 		Usuarios usuario = new Usuarios();
 		
+
 		usuario.setUsuario(request.getParameter("usuario"));
 		usuario.setSenha(request.getParameter("senha"));
 		dao.adicionaUsuario(usuario);

@@ -1,7 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
+
 
 <%@ page import="java.util.*,br.insper.proj1.*" %>
 
@@ -24,8 +21,8 @@
 						Login
 					</span>
 
-					<div class="wrap-input100 validate-input m-b-16" data-validate="Favor inserir um usuÃ¡rio">
-						<input class="input100" type="text" name="usuario" placeholder="UsuÃ¡rio">
+					<div class="wrap-input100 validate-input m-b-16" data-validate="Favor inserir um usuário">
+						<input class="input100" type="text" name="usuario" placeholder="Usuário">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -36,13 +33,22 @@
 
 					<div class="text-right p-t-13 p-b-23">
 						<span class="txt1">
-							Feito por
+							Precisa modificar sua senha?
 						</span>
 
-						<a href="#" class="txt2">
-							Alexandre e Rafael
+						<a href="EditaLogin.jsp" class="txt2">
+							Clique aqui
+						</a>
+					<br>
+						<span class="txt1">
+							Quer deletar seu usuario?
+						</span>
+
+						<a href="DeletarLogin.jsp" class="txt2">
+							Clique aqui
 						</a>
 					</div>
+
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">
@@ -50,9 +56,10 @@
 						</button>
 					</div>
 
+
 					<div class="flex-col-c p-t-170 p-b-40">
 						<span class="txt1 p-b-9">
-							NÃ£o possui uma conta?
+							Não possui uma conta?
 						</span>
 
 						<a href="cadastro.jsp" class="txt3">

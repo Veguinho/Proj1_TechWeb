@@ -171,4 +171,33 @@ public class Dao {
 			e.printStackTrace();
 		}
 	}
+	
+	public void alteraSenha (Usuarios usuario) {
+		String sql = "UPDATE Login SET " + "senha=? WHERE usuario=?";
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(sql);
+			stmt.setString(1, usuario.getSenha());
+			stmt.setString(2,usuario.getUsuario());
+			stmt.execute();
+			stmt.close();
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeUsuario (Usuarios usuario) {
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement("DELETE FROM Login WHERE usuario=?");
+			stmt.setString(1, usuario.getUsuario());
+			stmt.execute();
+			stmt.close();
+		} 
+		catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+	}
 }

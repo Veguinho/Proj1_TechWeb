@@ -38,6 +38,8 @@
 					<button class="login100-form-btn">
 						Enviar
 					</button>
+				<div class="flex-col-c p-t-40 p-b-40">
+					</div>
 				</div>
 	 		</form> 
 	 		</div>
@@ -61,6 +63,14 @@
     		<p> - - - - - - - - - - - - - - - - - - - - - - - - - <p>		
     		<p> <%=post.getTexto()%> </p>
     		
+    		<div class="text-right p-t-13 p-b-23">
+						<span class="txt1">
+
+						</span>
+
+
+					</div>
+    		
              <form class="container-login100-form-btn" action="Remove">
              	<button class="login100-form-btn">
 				 <input style="display: none" type="text" name="id" value="<%=post.getId()%>">
@@ -76,10 +86,14 @@
 					Editar Post
 				</button>
 			</form>
+			<div class="flex-col-c p-t-40 p-b-40">
+					</div>
 	      </div>
     	</div>
    	  </div>
     </div>
 
 	<% } %>
+	
+	
 </body>
