@@ -1,6 +1,6 @@
 
 
-<%@ page import="java.util.*,br.insper.proj1.*" %>
+<%@ page import="java.util.*,mvc.model.*" %>
 
 <head>
 	<title>Login V8</title>
@@ -61,14 +61,20 @@
 						<span class="txt1 p-b-9">
 							Não possui uma conta?
 						</span>
-
-						<a href="cadastro.jsp" class="txt3">
-							Registre-se agora
-						</a>
+					<a href="Registro">Crie sua conta</a>
+						
 					</div>
-				</form>
+					
+				
+			
+				
 			</div>
+			
 		</div>
+		
 	</div>
+	
+	
+ 						
 
 </body>

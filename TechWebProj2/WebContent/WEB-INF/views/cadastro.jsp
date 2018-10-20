@@ -44,6 +44,8 @@
 						<button class="login100-form-btn">
 							Criar Conta
 						</button>
+						
+						
 					</div>
 					<div class="flex-col-c p-t-40 p-b-40">
 					</div>

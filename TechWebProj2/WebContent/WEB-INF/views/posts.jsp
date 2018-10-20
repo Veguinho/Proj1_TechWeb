@@ -1,11 +1,8 @@
-<body>
-
-<!--  <link rel="stylesheet" href="css/Posts.css"> -->
 
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
-<%@ page import="java.util.*,br.insper.proj1.*" %>
+<%@ page import="java.util.*,mvc.model.*" %>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
