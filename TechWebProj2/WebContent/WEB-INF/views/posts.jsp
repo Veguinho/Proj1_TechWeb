@@ -16,20 +16,6 @@
 					<span class="focus-input100"></span>
 				</div>
 				
-				<div class="wrap-input100 validate-input m-b-16" data-validate="Data">
-					<input class="input100" type="date" name="data" placeholder="Data">
-					<span class="focus-input100"></span>
-				</div>
-				
-				<div class="wrap-input100 validate-input m-b-16" data-validate="Usuario">
-					<input class="input100" type="number" name="usuario" placeholder="Usuario">
-					<span class="focus-input100"></span>
-				</div>
-				
-				<div class="wrap-input100 validate-input m-b-16" data-validate="Texto">
-					<input class="input100" type="text" name="texto" placeholder="Texto">
-					<span class="focus-input100"></span>
-				</div>
 				
 				<div class="container-login100-form-btn">
 					<button class="login100-form-btn">
@@ -44,8 +30,8 @@
 	 </div>
 	<%
 		Dao dao = new Dao();
-			 List<Posts> posts = dao.getLista();
-			 for (Posts post : posts ) {
+		SteamWebApiDemo games = new SteamWebApiDemo();
+		games.getRecentlyPlayed(dao.logado) {
 	%>
 		 
 	<div class="limiter">
@@ -89,6 +75,7 @@
     	</div>
    	  </div>
     </div>
+   
 
 	<% } %>
 	

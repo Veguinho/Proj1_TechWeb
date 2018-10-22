@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.wrapper.spotify.SpotifyApi;
+
 public class Dao {
 	
 	private Connection connection = null;
@@ -25,13 +27,11 @@ public class Dao {
 			
 			catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("Aqui 1");
 				e.printStackTrace();
 			} 
 			
 			catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
-				System.out.println("Aqui 2");
 				e.printStackTrace();
 			}
 	}
@@ -158,15 +158,22 @@ public class Dao {
 	}
 	public void adicionaUsuario(Usuarios usuario) {
 		
-		String sql = "INSERT INTO Login" + "(id,usuario,senha) values(?,?,?)";
+		String sql = "INSERT INTO Login" + "(id_usuario,usuario,senha,steamid) values(?,?,?,?)";
 		PreparedStatement stmt;
-		
+		List<Usuarios> list = getUsuarios();
+		Integer ultimo = 1;
+		if (list.size() == 0) {
+			ultimo = 1;
+		}
+		else {
+			ultimo = list.get(list.size() - 1).getId() +1;
+		}
 		try {
-			connection.prepareStatement(sql);
 			stmt = connection.prepareStatement(sql);
-			stmt.setInt(1,1);
-			stmt.setString(1,usuario.getUsuario());
-			stmt.setString(2, usuario.getSenha());
+			stmt.setInt(1,ultimo);
+			stmt.setString(2,usuario.getUsuario());
+			stmt.setString(3, usuario.getSenha());
+			stmt.setString(4, usuario.getSteamID());
 			stmt.execute();
 			stmt.close();
 		}
@@ -204,4 +211,5 @@ public class Dao {
 		e.printStackTrace();
 		}
 	}
+	
 }

@@ -30,5 +30,23 @@
   		<artifactId>spring-webmvc</artifactId>
   		<version>4.3.3.RELEASE</version>
   	</dependency>
-  </dependencies>
+  	<dependency>
+  		<groupId>se.michaelthelin.spotify</groupId>
+ 		<artifactId>spotify-web-api-java</artifactId>
+  		<version>2.1.1</version>
+	</dependency>
+	
+	<dependency>
+    <groupId>com.lukaspradel</groupId>
+    <artifactId>steam-web-api</artifactId>
+    <version>1.2</version>
+</dependency>
+	</dependencies>
+	
+	<repositories>
+    	<repository>
+        	<id>jitpack.io</id>
+        	<url>https://jitpack.io</url>
+   	 	</repository>
+	</repositories>
 </project>

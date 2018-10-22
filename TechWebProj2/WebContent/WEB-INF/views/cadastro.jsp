@@ -31,6 +31,16 @@
 						<input class="input100" type="password" name="senha" placeholder="Escolha sua senha">
 						<span class="focus-input100"></span>
 					</div>
+					
+					<div class="wrap-input100 validate-input m-b-22	" data-validate = "Senha inválida">
+						<input class="input100" type="text" name="SteamID" placeholder="Insira seu SteamID">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div>
+						<p>Para achar seu id, va ate seu perfil na steam e pegue o numero da url depois de /profiles/</p>
+						<a href ="https://store.steampowered.com/" target="_blank">Pegue seu id aqui</a>
+					</div>
 
 					<div class="text-right p-t-13 p-b-23">
 						<span class="txt1">

@@ -10,16 +10,23 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.special.SearchResult;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import mvc.model.Dao;
 import mvc.model.Posts;
+import mvc.model.SearchPlaylistsExample;
 import mvc.model.Usuarios;
 
 @Controller
@@ -34,8 +41,13 @@ public class TarefasController {
 		return("cadastro");
 	}
 	
+	@RequestMapping("Main")
+	public String Posts() {
+		return("posts");
+	}
+	
 	@RequestMapping("ConfereLogin")
-	public String ConfereLogin(@RequestParam("usuario") String user, @RequestParam("senha") String pass) {
+	public ModelAndView ConfereLogin(@RequestParam("usuario") String user, @RequestParam("senha") String pass) {
 	Dao dao = new Dao();
 	List<Usuarios> usuariosLista = dao.getUsuarios();
 	
@@ -48,40 +60,19 @@ public class TarefasController {
 			if (usuario.getSenha().equals(pass)){
 				
 				System.out.println("PASSOU A SENHA!");				
-				return ("post");
+				return new ModelAndView("redirect:/Main");
 			}			
 		}
 	}
-	return pass;
+	System.out.println("Aqui 2");
+
+	return new ModelAndView("redirect:/Registro");
 }
 	@RequestMapping("Cria")
-	public String Cria(HttpServletResponse response, @RequestParam("titulo") String titulo, @RequestParam("usuario") Integer usuario, @RequestParam("texto") String texto, @RequestParam("data") String data) throws IOException {
-		Dao dao = new Dao();
-		Posts post = new Posts();
-		post.setTitulo(titulo);
-		post.setUsuario(Integer.valueOf(usuario));
-		post.setTexto(texto);
-		java.util.Date dateToday;
-		
-		
-		
-		try {
-			dateToday = new SimpleDateFormat("dd-MM-yyyy").parse(data);
-			Calendar dataDoPost = Calendar.getInstance();
-			dataDoPost.setTime(dateToday);
-			post.setData(dataDoPost);
-			dao.adiciona(post);
-			PrintWriter out = response.getWriter();
-			out.println("<html><body>");
-			out.println("adicionado" + post.getTitulo());
-			out.println("</body></html>");
-			dao.close();
-		
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return ("login");
+	public ModelAndView Cria(HttpServletResponse response, @RequestParam("titulo") String titulo) throws SpotifyWebApiException, IOException, JSONException {
+		SearchPlaylistsExample playlist = new SearchPlaylistsExample();
+		String play = playlist.teste(titulo);
+		return new ModelAndView("redirect:" + play +"/");
 	}
 	
 	@RequestMapping("Edita")
@@ -149,17 +140,18 @@ public class TarefasController {
 	}
 	
 	@RequestMapping(value = "NovoUsuario", method = {RequestMethod.GET})
-	public String NovoUsuario(HttpServletRequest request) {		
+	public ModelAndView NovoUsuario(HttpServletRequest request) {		
 		Dao dao = new Dao();
 		Usuarios usuario = new Usuarios();
-		System.out.println("Passou");
 
 		usuario.setUsuario(request.getParameter("usuario"));
 		usuario.setSenha(request.getParameter("senha"));
+		usuario.setSteamID(request.getParameter("SteamID"));
 		dao.adicionaUsuario(usuario);
-		
-		return "login";
+		return new ModelAndView("redirect:/");
 	}
+	
+
 
 	
 	@RequestMapping("RemoveUsuario")
