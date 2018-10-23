@@ -145,6 +145,7 @@ public class Dao {
 				usuario.setId(rs.getInt("id_usuario"));
 				usuario.setUsuario(rs.getString("usuario"));
 				usuario.setSenha(rs.getString("senha"));
+				usuario.setSteamID(rs.getString("steamid"));
 				usuariosLista.add(usuario);
 			}
 			rs.close();
@@ -185,8 +186,15 @@ public class Dao {
 	
 	public void logged(Usuarios usuario) throws SQLException {
 		String sql0 = "DELETE FROM Logged";
-		PreparedStatement stmt0 = null;
-		stmt0.execute();
+		PreparedStatement stmt0;
+		
+		try{
+			stmt0 = connection.prepareStatement(sql0);
+			stmt0.execute();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		String sql = "INSERT INTO Logged" + "(usuario,steamid) values(?,?)";
 		PreparedStatement stmt;

@@ -15,6 +15,7 @@ import com.wrapper.spotify.requests.data.search.simplified.SearchPlaylistsReques
 import java.awt.List;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import org.json.JSONArray;
@@ -29,29 +30,26 @@ public class SearchPlaylistsExample {
           .build();
   
   
-  public static String SearchPlaylist(String content) throws SpotifyWebApiException, IOException, JSONException {
+  public static LinkedList<String> SearchPlaylist(String content) throws SpotifyWebApiException, IOException, JSONException {
 	  SearchPlaylistsRequest searchPlaylistsRequest = spotifyApi.searchPlaylists(content).market(CountryCode.BR).limit(10).offset(0).build();
 	  String json = searchPlaylistsRequest.getJson();
 	  JSONObject parsed = new JSONObject(json);	
-	  System.out.println(json);
-	  
-	  Integer index = parsed.get("playlists").toString().indexOf("https://open.spotify.com/playlist/");
-	  if (index>=0) {
-	  String playlist = parsed.get("playlists").toString().substring(index,index + 56);
-	  return playlist;
-	  }
-	  else {
-		  return "nada";
-	  }
-	 
+//	  System.out.println(parsed);
+      String items = ((JSONObject) parsed.get("playlists")).get("items").toString();
+	  String[] lista = items.split("owner");
+	  LinkedList<String> links = new LinkedList<String>();
+	  for (String i: lista) {
+		  try {	
+			  Integer index = i.indexOf("https://open.spotify.com/playlist/");
+			  String playlist = i.substring(index,index + 56);
+			  links.add(playlist);
+		  }
+		  catch (Exception e) {
  
- 
-  
   }
-
-
-
 }
+	  return(links);
+  }}
 
  
  

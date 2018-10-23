@@ -12,8 +12,8 @@ import java.util.concurrent.Future;
 //Codigo pego de https://github.com/thelinmichael/spotify-web-api-java/blob/master/examples/authorization/client_credentials/ClientCredentialsExample.java
 
 public class ClientCredentialsExample {
-  private static final String clientId = "id";
-  private static final String clientSecret = "secret";
+  private static final String clientId = "ID";
+  private static final String clientSecret = "Secret";
 
   private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
           .setClientId(clientId)

@@ -1,6 +1,7 @@
 package mvc.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.mbeans.UserMBean;
 import org.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.special.SearchResult;
 
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import mvc.model.Dao;
 import mvc.model.Posts;
 import mvc.model.SearchPlaylistsExample;
+import mvc.model.SteamWebApiDemo;
 import mvc.model.Usuarios;
 
 @Controller
@@ -43,7 +47,8 @@ public class TarefasController {
 	}
 	
 	@RequestMapping("Main")
-	public String Posts() {
+	public String Posts() throws MalformedURLException, SteamApiException, JSONException, IOException {
+		
 		return("posts");
 	}
 	
@@ -51,7 +56,6 @@ public class TarefasController {
 	public ModelAndView ConfereLogin(@RequestParam("usuario") String user, @RequestParam("senha") String pass) throws SQLException {
 	Dao dao = new Dao();
 	List<Usuarios> usuariosLista = dao.getUsuarios();
-	List<Usuarios> usuariosLogado = dao.getLogged();
 
 	
 	for (Usuarios usuario : usuariosLista ) {
@@ -60,8 +64,8 @@ public class TarefasController {
 			
 			
 			if (usuario.getSenha().equals(pass)){
-				
-				dao.logged(usuariosLogado.get(0));
+
+				dao.logged(usuario);
 				return new ModelAndView("redirect:/Main");
 			}			
 		}
@@ -73,9 +77,23 @@ public class TarefasController {
 	@RequestMapping("Cria")
 	public ModelAndView Cria(HttpServletResponse response, @RequestParam("titulo") String titulo) throws SpotifyWebApiException, IOException, JSONException {
 		SearchPlaylistsExample playlist = new SearchPlaylistsExample();
-		String play = playlist.teste(titulo);
-		return new ModelAndView("redirect:" + play +"/");
-	}
+		if (titulo.indexOf(":")>=0) {
+			titulo = titulo.split(":")[0].toString();
+			
+			String play = playlist.SearchPlaylist(titulo);
+			if(play.equals("nada")) {
+				return new ModelAndView("redirect:/Main");
+			}
+			return new ModelAndView("redirect:" + play +"/");
+		}
+	
+		else {
+			String play = playlist.SearchPlaylist(titulo);
+			if(play.equals("nada")) {
+				return new ModelAndView("redirect:/Main");
+			}
+			return new ModelAndView("redirect:" + play +"/");
+	}}
 	
 	@RequestMapping("Edita")
 	
@@ -148,8 +166,11 @@ public class TarefasController {
 
 		usuario.setUsuario(request.getParameter("usuario"));
 		usuario.setSenha(request.getParameter("senha"));
+		
 		usuario.setSteamID(request.getParameter("SteamID"));
+
 		dao.adicionaUsuario(usuario);
+
 		return new ModelAndView("redirect:/");
 	}
 	
@@ -170,7 +191,6 @@ public class TarefasController {
 				usuario.setSenha(senha);
 				
 				dao.removeUsuario(usuario);
-				System.out.println("USUARIO APAGADO!");
 				dao.close();
 				return("login");	
 			}
