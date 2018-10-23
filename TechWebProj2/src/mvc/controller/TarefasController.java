@@ -1,6 +1,7 @@
 package mvc.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,19 +48,20 @@ public class TarefasController {
 	}
 	
 	@RequestMapping("ConfereLogin")
-	public ModelAndView ConfereLogin(@RequestParam("usuario") String user, @RequestParam("senha") String pass) {
+	public ModelAndView ConfereLogin(@RequestParam("usuario") String user, @RequestParam("senha") String pass) throws SQLException {
 	Dao dao = new Dao();
 	List<Usuarios> usuariosLista = dao.getUsuarios();
+	List<Usuarios> usuariosLogado = dao.getLogged();
+
 	
 	for (Usuarios usuario : usuariosLista ) {
 		
 		if (usuario.getUsuario().equals(user)) {
 			
-			System.out.println("PASSOU O USUARIO!");
 			
 			if (usuario.getSenha().equals(pass)){
 				
-				System.out.println("PASSOU A SENHA!");				
+				dao.logged(usuariosLogado.get(0));
 				return new ModelAndView("redirect:/Main");
 			}			
 		}

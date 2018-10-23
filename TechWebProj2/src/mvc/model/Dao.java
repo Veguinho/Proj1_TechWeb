@@ -156,6 +156,52 @@ public class Dao {
 		}
 		return usuariosLista;
 	}
+	
+	
+	public List<Usuarios> getLogged() {
+		
+		List<Usuarios> usuariosLista = new ArrayList<Usuarios>();
+		
+		try {	
+			PreparedStatement stmt;
+			stmt = connection.prepareStatement("SELECT * FROM logged");			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Usuarios usuario = new Usuarios();
+				usuario.setSteamID(rs.getString("SteamID"));
+				usuario.setUsuario(rs.getString("usuario"));
+				usuariosLista.add(usuario);
+			}
+			rs.close();
+			stmt.close();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return usuariosLista;
+	}
+	
+	public void logged(Usuarios usuario) throws SQLException {
+		String sql0 = "DELETE FROM Logged";
+		PreparedStatement stmt0 = null;
+		stmt0.execute();
+
+		String sql = "INSERT INTO Logged" + "(usuario,steamid) values(?,?)";
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(sql);
+			stmt.setString(1, usuario.getUsuario());
+			stmt.setString(2,usuario.getSteamID());
+			stmt.execute();
+			stmt.close();
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void adicionaUsuario(Usuarios usuario) {
 		
 		String sql = "INSERT INTO Login" + "(id_usuario,usuario,senha,steamid) values(?,?,?,?)";
